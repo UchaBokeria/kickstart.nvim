@@ -1,3 +1,4 @@
+---@diagnostic disable: undefined-doc-name, undefined-field
 --[[
 
 =====================================================================
@@ -85,7 +86,7 @@ P.S. You can delete this when you're done too. It's your config now! :)
 --]]
 
 -- Detect if running in VSCode/Cursor (via vscode-neovim extension)
-vim.g.vscode = vim.g.vscode or 0  -- Default to 0 if not set
+vim.g.vscode = vim.g.vscode or 0 -- Default to 0 if not set
 local is_vscode = vim.g.vscode == 1
 
 -- If running in VSCode/Cursor, disable some features
@@ -135,6 +136,12 @@ vim.o.showmode = false
 vim.schedule(function()
   vim.o.clipboard = 'unnamedplus'
 end)
+
+vim.g.startup_bookmarks = {
+  ['Q'] = '~/.config/qtile/config.py',
+  ['I'] = '~/.config/nvim/init.lua',
+  ['F'] = '~/.config/fish/config.fish',
+}
 
 -- Enable break indent
 vim.o.breakindent = true
@@ -692,7 +699,27 @@ require('lazy').setup({
         clangd = {},
         gopls = {},
         templ = {},
-        -- pyright = {},
+        pyright = {
+          settings = {
+            pyright = {
+              -- These are global Pyright settings
+              disableOrganizeImports = false, -- Allow Pyright to offer import sorting (works with code actions)
+            },
+            python = {
+              analysis = {
+                autoImportCompletions = true, -- Enable auto-import suggestions in completions
+                autoSearchPaths = true, -- Automatically search for import paths (e.g., site-packages)
+                -- diagnosticMode = 'workspace', -- Run diagnostics on all workspace files, not just open ones
+                -- typeCheckingMode = "strict",   -- Enforce strict type rules (requires annotations, catches more errors)
+                useLibraryCodeForTypes = true, -- Use type info from library stubs for better inference
+                diagnosticSeverityOverrides = {
+                  reportUnusedImport = 'warning', -- Warn about unused imports (instead of error or none)
+                  reportMissingTypeStubs = 'none', -- Ignore missing stubs for third-party libs to reduce noise
+                },
+              },
+            },
+          },
+        },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -789,10 +816,10 @@ require('lazy').setup({
         lua = { 'stylua' },
         go = { 'gofmt' },
         -- Conform can also run multiple formatters sequentially
-        -- python = { "isort", "black" },
+        python = { 'isort', 'black' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        -- javascript = { "prettierd", "prettier", stop_after_first = true },
+        javascript = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
   },
@@ -1003,7 +1030,7 @@ require('lazy').setup({
   --    This is the easiest way to modularize your config.
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
   --
   -- For additional information with loading, sourcing and examples see `:help lazy.nvim-🔌-plugin-spec`
   -- Or use telescope!
@@ -1035,3 +1062,5 @@ require('lazy').setup({
 -- vim: ts=2 sts=2 sw=2 et
 --
 
+-- Load custom configurations
+require 'custom'

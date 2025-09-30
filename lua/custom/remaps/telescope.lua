@@ -75,7 +75,10 @@ map('n', '<leader>tghi', ':Octo issue list', { desc = 'Telescope: GitHub Issues'
 map('n', '<leader>tghp', ':Octo pr list', { desc = 'Telescope: GitHub PRs' })
 map('n', '<leader>tghs', ':Octo search', { desc = 'Telescope: GitHub Search' })
 
+-- Todos
+map('n', '<leader>tt', ':TodoTelescope keywords=TODO,FIX<CR>', { desc = 'Telescope: Todo Search' })
+
 -- 🎨 Theme
-map('n', '<leader>tt', function()
+map('n', '<leader>tst', function()
   require('custom.utils.themes').Theme_switcher()
 end, { desc = 'Telescope: Theme Switcher' })

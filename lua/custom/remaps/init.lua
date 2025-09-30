@@ -37,31 +37,6 @@ if not is_vscode then
   local harpoon = require 'harpoon'
   harpoon:setup()
 
-  map('n', '<leader>aa', function()
-    harpoon:list():add()
-  end, { desc = 'Harpoon add file in the list' })
-
-  map('n', '<leader>1', function()
-    harpoon:list():select(1)
-  end)
-  map('n', '<leader>2', function()
-    harpoon:list():select(2)
-  end)
-  map('n', '<leader>3', function()
-    harpoon:list():select(3)
-  end)
-  map('n', '<leader>4', function()
-    harpoon:list():select(4)
-  end)
-
-  -- Toggle previous & next buffers stored within Harpoon list
-  map('n', '<leader>q', function()
-    harpoon:list():prev()
-  end)
-  map('n', '<leader>e', function()
-    harpoon:list():next()
-  end)
-
   -- Harpoon telescope integration
   local conf = require('telescope.config').values
   local function toggle_telescope(harpoon_files)
@@ -82,7 +57,57 @@ if not is_vscode then
       :find()
   end
 
-  map('n', '<C-e>', function()
+  map('n', '<leader>a', function() end, { desc = 'Harpoon' })
+  map('n', '<leader>q', function()
+    harpoon:list():prev()
+  end)
+  map('n', '<leader>e', function()
+    harpoon:list():next()
+  end)
+
+  map('n', '<leader>aR', function()
+    harpoon:list():clear()
+  end, { desc = 'Remove all files from the list' })
+
+  map('n', '<leader>ar', function()
+    harpoon:list():remove()
+  end, { desc = 'Remove current file from the list' })
+
+  map('n', '<leader>aa', function()
+    harpoon:list():add()
+  end, { desc = 'Harpoon add file in the list' })
+
+  map('n', '<leader>ae', function()
     toggle_telescope(harpoon:list())
   end, { desc = 'Open harpoon window' })
+
+  map('n', '<leader>1', function()
+    harpoon:list():select(1)
+  end)
+  map('n', '<leader>2', function()
+    harpoon:list():select(2)
+  end)
+  map('n', '<leader>3', function()
+    harpoon:list():select(3)
+  end)
+  map('n', '<leader>4', function()
+    harpoon:list():select(4)
+  end)
+  map('n', '<leader>5', function()
+    harpoon:list():select(5)
+  end)
+  map('n', '<leader>6', function()
+    harpoon:list():select(6)
+  end)
+  map('n', '<leader>7', function()
+    harpoon:list():select(7)
+  end)
+  map('n', '<leader>8', function()
+    harpoon:list():select(8)
+  end)
+  map('n', '<leader>9', function()
+    harpoon:list():select(9)
+  end)
+
+  -- Toggle previous & next buffers stored within Harpoon list
 end

@@ -95,4 +95,107 @@ return {
     end,
   },
   'ThePrimeagen/vim-be-good',
+  {
+    'NickvanDyke/opencode.nvim',
+    dependencies = { 'folke/snacks.nvim' },
+    opts = {
+      -- Fixed syntax; keep false to match your setup, or set to true for auto-launch in embedded terminal
+      ['auto-fallback-to-embedded'] = false,
+      -- Optional: Extend contexts with customs (add more as needed)
+      context = {
+        -- Example: Custom placeholder for entire project files (requires scripting or external tools)
+        ['@project'] = function()
+          return vim.fn.system 'git ls-files'
+        end,
+      },
+      -- Optional: Add custom prompts for select_prompt()
+      prompts = {
+        'Explain the code: @cursor',
+        'Refactor this: @selection',
+        'Generate tests for: @buffer',
+      },
+    },
+    keys = {
+      -- Basic ask (improved with cursor context)
+      {
+        '<leader>oa',
+        function()
+          require('opencode').ask '@cursor: '
+        end,
+        desc = 'Ask opencode about cursor',
+        mode = 'n',
+      },
+      -- Visual mode (unchanged, but consistent)
+      {
+        '<leader>oa',
+        function()
+          require('opencode').ask '@selection: '
+        end,
+        desc = 'Ask opencode about selection',
+        mode = 'v',
+      },
+      -- Toggle embedded terminal (useful if auto-fallback is false)
+      {
+        '<leader>ot',
+        function()
+          require('opencode').toggle()
+        end,
+        desc = 'Toggle embedded opencode',
+        mode = 'n',
+      },
+      -- New session
+      {
+        '<leader>on',
+        function()
+          require('opencode').command 'session_new'
+        end,
+        desc = 'New opencode session',
+        mode = 'n',
+      },
+      -- Copy last message
+      {
+        '<leader>oy',
+        function()
+          require('opencode').command 'messages_copy'
+        end,
+        desc = 'Copy last opencode message',
+        mode = 'n',
+      },
+      -- Scroll messages (use in opencode buffer)
+      {
+        '<S-C-u>',
+        function()
+          require('opencode').command 'messages_half_page_up'
+        end,
+        desc = 'Scroll opencode messages up',
+        mode = 'n',
+      },
+      {
+        '<S-C-d>',
+        function()
+          require('opencode').command 'messages_half_page_down'
+        end,
+        desc = 'Scroll opencode messages down',
+        mode = 'n',
+      },
+      -- Select from prompts (normal and visual)
+      {
+        '<leader>op',
+        function()
+          require('opencode').select_prompt()
+        end,
+        desc = 'Select opencode prompt',
+        mode = { 'n', 'v' },
+      },
+      -- Example custom: Explain near cursor
+      {
+        '<leader>oe',
+        function()
+          require('opencode').ask '@buffer\nExplain the code near the cursor:\n@cursor'
+        end,
+        desc = 'Explain code near cursor',
+        mode = 'n',
+      },
+    },
+  },
 }

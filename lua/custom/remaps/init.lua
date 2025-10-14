@@ -57,7 +57,7 @@ if not is_vscode then
       :find()
   end
 
-  map('n', '<leader>a', function() end, { desc = 'Harpoon' })
+  -- map('n', '<leader>a', function() end, { desc = 'Harpoon' })
   map('n', '<leader>q', function()
     harpoon:list():prev()
   end)

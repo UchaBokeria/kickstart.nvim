@@ -167,6 +167,8 @@ return {
           -- File browser configuration
           file_browser = {
             -- hijack_netrw = true,
+            grouped = true,
+            hidden = true,
             mappings = {
               i = {
                 ["<C-w>"] = function() vim.cmd('normal vbd') end,
@@ -176,6 +178,18 @@ return {
               n = {
                 ["h"] = fb_actions.goto_parent_dir,
                 ["l"] = actions.select_default,
+                ["D"] = function(prompt_bufnr)
+                  local picker = require('telescope.actions.state').get_current_picker(prompt_bufnr)
+                  local cwd = picker.finder.cwd
+                  local name = vim.fn.input("New directory name: ")
+                  if name ~= "" then
+                    vim.fn.mkdir(cwd .. "/" .. name, "p")
+                    actions.close(prompt_bufnr)
+                    vim.defer_fn(function()
+                      require('telescope').extensions.file_browser.file_browser({ path = cwd, initial_mode = 'normal' })
+                    end, 10)
+                  end
+                end,
                 ["/"] = function()
                   vim.cmd('startinsert')
                 end

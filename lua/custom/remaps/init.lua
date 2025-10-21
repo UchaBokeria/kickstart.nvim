@@ -4,6 +4,7 @@ local map = vim.keymap.set
 local is_vscode = vim.g.vscode == 1
 
 require 'custom.remaps.telescope'
+require 'custom.remaps.opencode'
 
 map('n', '<C-z>', '<Nop>', { noremap = true, silent = true })
 
@@ -109,5 +110,37 @@ if not is_vscode then
     harpoon:list():select(9)
   end)
 
-  -- Toggle previous & next buffers stored within Harpoon list
-end
+   -- Toggle previous & next buffers stored within Harpoon list
+
+   -- Quickfix toggle function
+   local function toggle_quickfix()
+     local qf_exists = false
+     for _, win in ipairs(vim.fn.getwininfo()) do
+       if win.quickfix == 1 then
+         qf_exists = true
+         break
+       end
+     end
+     if qf_exists then
+       vim.cmd('cclose')
+     else
+       vim.cmd('copen')
+     end
+   end
+
+   -- Diagnostic keymaps
+   map('n', '<leader>dd', vim.diagnostic.open_float, { desc = 'Show diagnostic details' })
+   map('n', '<leader>dp', require('telescope.builtin').diagnostics, { desc = 'Preview diagnostics in telescope' })
+   map('n', '<leader>dn', vim.diagnostic.goto_next, { desc = 'Next diagnostic' })
+   map('n', '<leader>dN', vim.diagnostic.goto_prev, { desc = 'Previous diagnostic' })
+   map('n', '<leader>da', vim.lsp.buf.code_action, { desc = 'Apply code action/fix' })
+   map('n', '<leader>dl', vim.diagnostic.setloclist, { desc = 'Open diagnostic location list' })
+
+   -- Quickfix keymaps
+   map('n', '<leader>i', toggle_quickfix, { desc = 'Toggle quickfix window' })
+   map('n', '<leader>il', vim.diagnostic.setqflist, { desc = 'Open diagnostic quickfix list' })
+   map('n', '<leader>in', '<cmd>cnext<CR>', { desc = 'Next quickfix item' })
+   map('n', '<leader>iN', '<cmd>cprev<CR>', { desc = 'Previous quickfix item' })
+   map('n', '<leader>ip', require('telescope.builtin').quickfix, { desc = 'Preview quickfix in telescope' })
+   map('n', '<leader>io', '<cmd>copen<CR>', { desc = 'Open quickfix window' })
+   end

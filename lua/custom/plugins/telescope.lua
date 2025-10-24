@@ -125,6 +125,7 @@ return {
           -- Default configuration for telescope goes here:
           path_display = { "truncate" },
           sorting_strategy = "ascending",
+          numbering = true,
           layout_config = {
             horizontal = {
               prompt_position = "top",
@@ -169,6 +170,7 @@ return {
             -- hijack_netrw = true,
             grouped = true,
             hidden = true,
+            numbering = true,
             mappings = {
               i = {
                 ["<C-w>"] = function() vim.cmd('normal vbd') end,

@@ -43,7 +43,7 @@ end, { desc = 'Telescope: Markdown/Org Headings' })
 
 -- 📂 File Operations
 map('n', '<leader>tf', function()
-  require('telescope').extensions.file_browser.file_browser { path = '%:p:h', initial_mode = 'normal' }
+  require('telescope').extensions.file_browser.file_browser { path = '%:p:h', initial_mode = 'normal', numbering = true }
 end, { desc = 'Telescope: File Browser' })
 map('n', '<leader>tF', ':Telescope find_files<CR>')
 map('n', '<leader>tr', builtin.oldfiles, { desc = 'Telescope: Recent Files' })

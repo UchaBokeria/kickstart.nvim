@@ -727,7 +727,41 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        ts_ls = {},
+        ts_ls = {
+          settings = {
+            typescript = {
+              preferences = {
+                includePackageJsonAutoImports = "auto",
+                importModuleSpecifier = "relative",
+              },
+              suggest = {
+                includeCompletionsForImportStatements = true,
+                includeAutomaticOptionalChainCompletions = true,
+              },
+            },
+            javascript = {
+              preferences = {
+                includePackageJsonAutoImports = "auto",
+                importModuleSpecifier = "relative",
+              },
+              suggest = {
+                includeCompletionsForImportStatements = true,
+                includeAutomaticOptionalChainCompletions = true,
+              },
+            },
+          },
+          on_init = function(client)
+            -- Ensure tsconfig.json is found in project root
+            local tsconfig = vim.fn.getcwd() .. "/tsconfig.json"
+            if vim.fn.filereadable(tsconfig) == 1 then
+              client.config.settings.typescript.preferences.tsconfig = tsconfig
+            end
+          end,
+          root_dir = function(fname)
+            -- Find project root containing tsconfig.json or package.json
+            return require('lspconfig.util').root_pattern('tsconfig.json', 'package.json', '.git')(fname) or vim.fn.getcwd()
+          end,
+        },
         --
 
         lua_ls = {
